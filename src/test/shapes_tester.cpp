@@ -62,35 +62,14 @@ vector<GLfloat> cube_texcoords {
 };
 
 vector<GLfloat> vertexarray {
-    -size, -size,  size,
-     size, -size,  size,
-     size,  size,  size,
-    -size,  size,  size,
-
-    -size,  size,  size,
-     size,  size,  size,
-     size,  size, -size,
-    -size,  size, -size,
-
-     size, -size, -size,
-    -size, -size, -size,
-    -size,  size, -size,
-     size,  size, -size,
-
-    -size, -size, -size,
-     size, -size, -size,
-     size, -size,  size,
-    -size, -size,  size,
-
-    -size, -size, -size,
-    -size, -size,  size,
-    -size,  size,  size,
-    -size,  size, -size,
-
-     size, -size,  size,
-     size, -size, -size,
-     size,  size, -size,
-     size,  size,  size,
+	-size, -size, size,
+	size, -size, size,
+	size, size, size, 
+	-size, size, size,
+	size, size, -size,
+	-size, size, -size,
+	-size, -size, -size,
+	size, -size, -size
 };
 
 vector<GLfloat> colorarray{
@@ -105,26 +84,27 @@ vector<GLfloat> colorarray{
 };
 											
 vector<GLubyte> elems {
-     0,  1,  2,
-     2,  3,  0,
-
-     4,  5,  6,
-     6,  7,  4,
-
-     8,  9, 10,
-    10, 11,  8,
-
-    12, 13, 14,
-    14, 15, 12,
-
-    16, 17, 18,
-    18, 19, 16,
-
-    20, 21, 22,
-    22, 23, 20
+	0, 1, 2,
+	0, 2, 3,
+	
+	0, 3, 5,
+	0, 5, 6,
+	
+	1, 2, 4,
+	1, 4, 7,
+		
+	2, 3, 4,
+	3, 4, 5,
+	
+	0, 1, 6,
+	0, 1, 7,
+	
+	5, 6, 7,
+	4, 5, 7
 };
 
-Shape cube(vertexarray, elems, colorarray, normsarray, "texture.png", cube_texcoords);
+Shape *cube;
+
 void init(){
   
   glEnable(GL_DEPTH_TEST);
@@ -143,6 +123,10 @@ void init(){
   };
 		
   program=initShaders(shaders);
+  
+  cube = new Shape(vertexarray, elems, colorarray, normsarray, "texture.png", cube_texcoords);
+  
+  cube->set_buffers();
   /*  glEnableVertexAttribArray(0);
   glEnableVertexAttribArray(1);
   glEnableVertexAttribArray(2);
@@ -158,7 +142,7 @@ void init(){
 void display(SDL_Window* screen){
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	
-  /*  glm::mat4 trans;
+  /* glm::mat4 trans;
 	
   trans=glm::translate(trans,cubeTran);//translate the cube
   trans=glm::rotate(trans,pit,glm::vec3(1,0,0));//rotate the cube around the x axis
@@ -174,8 +158,7 @@ void display(SDL_Window* screen){
   glUniform1i(uniform_mytexture, 0); 
 
   glDrawElements(GL_TRIANGLE_STRIP,36,GL_UNSIGNED_BYTE,NULL); */
-  cube.set_buffers();
-  cube.draw();
+  cube->draw();
   
   glFlush();
   SDL_GL_SwapWindow(screen);
