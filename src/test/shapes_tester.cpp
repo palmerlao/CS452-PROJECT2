@@ -7,100 +7,18 @@ GLint uniform_mytexture;
 GLint attribute_texcoord;
 GLfloat pit,yaw,scalar=1;
 glm::vec3 cubeTran;
+GLfloat size=10;
+GLfloat ncomp = 1.0f / sqrt(3.0f); // for normal vectors
 
 #include "shape.h"
+#include "cube.h"
+#include "triprism.h"
 
 void rotate(GLuint locate);
 
-GLfloat size=10;
-
-GLfloat ncomp = 1.0f / sqrt(3.0f); // for normal vectors
-
-vector<GLfloat> normsarray {
-   -ncomp, -ncomp,  ncomp,
-    ncomp, -ncomp,  ncomp,
-    ncomp,  ncomp,  ncomp, 
-   -ncomp,  ncomp,  ncomp,
-    ncomp,  ncomp, -ncomp,
-   -ncomp,  ncomp, -ncomp,
-   -ncomp, -ncomp, -ncomp,
-    ncomp, -ncomp, -ncomp
-};
 
 
-vector<GLfloat> cube_texcoords {
-  -size, -size,
-   size, -size,
-   size,  size,
-  -size,  size,
 
-  -size, -size,
-   size, -size,
-   size,  size,
-  -size,  size,
-
-  -size, -size,
-   size, -size,
-   size,  size,
-  -size,  size,
-
-  -size, -size,
-   size, -size,
-   size,  size,
-  -size,  size,
-
-  -size, -size,
-   size, -size,
-   size,  size,
-  -size,  size,
-
-  -size, -size,
-   size, -size,
-   size,  size,
-  -size,  size,
-};
-
-vector<GLfloat> vertexarray {
-   -size, -size,  size,
-    size, -size,  size,
-    size,  size,  size, 
-   -size,  size,  size,
-    size,  size, -size,
-   -size,  size, -size,
-   -size, -size, -size,
-    size, -size, -size 
-};
-
-vector<GLfloat> colorarray{
-  1.0f,0.0f,0.0f,1.0f,
-  1.0f,0.0f,0.0f,1.0f,
-  1.0f,0.0f,0.0f,1.0f,
-  1.0f,0.0f,0.0f,1.0f,
-  1.0f,0.0f,0.0f,1.0f,
-  1.0f,0.0f,0.0f,1.0f,
-  1.0f,0.0f,0.0f,1.0f,
-  1.0f,0.0f,0.0f,1.0f
-};
-											
-vector<GLubyte> elems {
-  0, 1, 2,
-  0, 2, 3,
-
-  0, 3, 5,
-  0, 5, 6,
-
-  1, 2, 4,
-  1, 4, 7,
-		
-  2, 3, 4,
-  3, 4, 5,
-	
-  0, 1, 6,
-  0, 1, 7,
-	
-  5, 6, 7,
-  4, 5, 7
-};
 
 Shape *cube;
 
@@ -123,7 +41,7 @@ void init(){
 		
   program=initShaders(shaders);
   
-  cube = new Shape(vertexarray, elems, colorarray, normsarray, "texture.png", cube_texcoords);
+  cube = new Shape(triprism_vertices, triprism_elems, triprism_colors, triprism_normals, "texture.png", triprism_texcoords);
 }
 
 
