@@ -8,7 +8,6 @@ GLint attribute_texcoord;
 GLfloat pit,yaw,scalar=1;
 glm::vec3 cubeTran;
 
-
 #include "shape.h"
 
 void rotate(GLuint locate);
@@ -18,14 +17,14 @@ GLfloat size=10;
 GLfloat ncomp = 1.0f / sqrt(3.0f); // for normal vectors
 
 vector<GLfloat> normsarray {
-   ncomp,  ncomp, -ncomp,
-   ncomp, -ncomp, -ncomp,
-  -ncomp, -ncomp, -ncomp,
-  -ncomp,  ncomp, -ncomp,
-   ncomp,  ncomp,  ncomp,
-   ncomp, -ncomp,  ncomp,
-  -ncomp, -ncomp,  ncomp,
-  -ncomp,  ncomp,  ncomp
+   -ncomp, -ncomp,  ncomp,
+    ncomp, -ncomp,  ncomp,
+    ncomp,  ncomp,  ncomp, 
+   -ncomp,  ncomp,  ncomp,
+    ncomp,  ncomp, -ncomp,
+   -ncomp,  ncomp, -ncomp,
+   -ncomp, -ncomp, -ncomp,
+    ncomp, -ncomp, -ncomp
 };
 
 
@@ -62,14 +61,14 @@ vector<GLfloat> cube_texcoords {
 };
 
 vector<GLfloat> vertexarray {
-	-size, -size, size,
-	size, -size, size,
-	size, size, size, 
-	-size, size, size,
-	size, size, -size,
-	-size, size, -size,
-	-size, -size, -size,
-	size, -size, -size
+   -size, -size,  size,
+    size, -size,  size,
+    size,  size,  size, 
+   -size,  size,  size,
+    size,  size, -size,
+   -size,  size, -size,
+   -size, -size, -size,
+    size, -size, -size 
 };
 
 vector<GLfloat> colorarray{
@@ -84,23 +83,23 @@ vector<GLfloat> colorarray{
 };
 											
 vector<GLubyte> elems {
-	0, 1, 2,
-	0, 2, 3,
-	
-	0, 3, 5,
-	0, 5, 6,
-	
-	1, 2, 4,
-	1, 4, 7,
+  0, 1, 2,
+  0, 2, 3,
+
+  0, 3, 5,
+  0, 5, 6,
+
+  1, 2, 4,
+  1, 4, 7,
 		
-	2, 3, 4,
-	3, 4, 5,
+  2, 3, 4,
+  3, 4, 5,
 	
-	0, 1, 6,
-	0, 1, 7,
+  0, 1, 6,
+  0, 1, 7,
 	
-	5, 6, 7,
-	4, 5, 7
+  5, 6, 7,
+  4, 5, 7
 };
 
 Shape *cube;
@@ -125,41 +124,13 @@ void init(){
   program=initShaders(shaders);
   
   cube = new Shape(vertexarray, elems, colorarray, normsarray, "texture.png", cube_texcoords);
-  
-  cube->set_buffers();
-  /*  glEnableVertexAttribArray(0);
-  glEnableVertexAttribArray(1);
-  glEnableVertexAttribArray(2);
-
-  attribute_texcoord = glGetAttribLocation(program, "texcoord");
-  if (attribute_texcoord == -1)
-    fprintf(stderr, "Could not bind attribute %s\n", "texcoord");
-  glEnableVertexAttribArray(attribute_texcoord);
-  glVertexAttribPointer(attribute_texcoord, 2, GL_FLOAT, GL_FALSE, 0, 0); */
 }
 
 
 void display(SDL_Window* screen){
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-	
-  /* glm::mat4 trans;
-	
-  trans=glm::translate(trans,cubeTran);//translate the cube
-  trans=glm::rotate(trans,pit,glm::vec3(1,0,0));//rotate the cube around the x axis
-  trans=glm::rotate(trans,yaw,glm::vec3(0,1,0));//rotate the cube arround the y axis
-  trans=glm::scale(trans,glm::vec3(scalar));//scaling the cube
-    
-  GLint tempLoc = glGetUniformLocation(program,"modelMatrix");//Matrix that handle the transformations
-  glUniformMatrix4fv(tempLoc,1,GL_FALSE,&trans[0][0]);
-
-  glActiveTexture(GL_TEXTURE0);
-  glBindTexture(GL_TEXTURE_2D, texture_id);
-  uniform_mytexture = glGetUniformLocation(program, "texture");
-  glUniform1i(uniform_mytexture, 0); 
-
-  glDrawElements(GL_TRIANGLE_STRIP,36,GL_UNSIGNED_BYTE,NULL); */
-  cube->draw();
-  
+  cube->set_buffers();
+  cube->draw();  
   glFlush();
   SDL_GL_SwapWindow(screen);
 }

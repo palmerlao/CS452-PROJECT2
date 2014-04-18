@@ -62,25 +62,14 @@ Shape::Shape(vector<GLfloat> vs,
   img = SOIL_load_image(texture_img.c_str(), &img_width, &img_height, NULL, 0);
 
   /*Generate Appropriate Buffers*/
-fprintf(stderr,"0");
   glGenVertexArrays(1,&vaoID); 
   glGenBuffers(3,vboID);
-fprintf(stderr,"1");
-  glGenBuffers(1,&eboID);
-fprintf(stderr,"2");
-  glGenBuffers(1,&texcoordsID);
-fprintf(stderr,"3");
-  glGenTextures(1,&textureID);
-  /*glEnableVertexAttribArray(0);
-  glEnableVertexAttribArray(1);
-  glEnableVertexAttribArray(2);
 
-  attribute_texcoord = glGetAttribLocation(program, "texcoord");
-  if (attribute_texcoord == -1)
-    fprintf(stderr, "Could not bind texcoord attribute\n");
-  glEnableVertexAttribArray(attribute_texcoord);
-  glVertexAttribPointer(attribute_texcoord, 2, GL_FLOAT, GL_FALSE, 0, 0);
-*/
+  glGenBuffers(1,&eboID);
+
+  glGenBuffers(1,&texcoordsID);
+
+  glGenTextures(1,&textureID);
 }
 
 Shape::~Shape() {
@@ -93,32 +82,26 @@ Shape::~Shape() {
 }
 
 void Shape::set_buffers() {
- // glGenVertexArrays(1,&vaoID);
   glBindVertexArray(vaoID);
 
- // glGenBuffers(3, vboID);
-
   glBindBuffer(GL_ARRAY_BUFFER, vboID[0]);
-  glBufferData(GL_ARRAY_BUFFER, vsz, vertices, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, vsz*sizeof(GLfloat), vertices, GL_STATIC_DRAW);
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
- // glGenBuffers(1, &eboID);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboID);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, esz, elements, GL_STATIC_DRAW);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, esz*sizeof(GLubyte), elements, GL_STATIC_DRAW);
 
   glBindBuffer(GL_ARRAY_BUFFER, vboID[1]);
-  glBufferData(GL_ARRAY_BUFFER, csz, colors, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, csz*sizeof(GLfloat), colors, GL_STATIC_DRAW);
   glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
   glBindBuffer(GL_ARRAY_BUFFER, vboID[2]);
-  glBufferData(GL_ARRAY_BUFFER, nsz, normals, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, nsz*sizeof(GLfloat), normals, GL_STATIC_DRAW);
   glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
- // glGenBuffers(1, &texcoordsID);
   glBindBuffer(GL_ARRAY_BUFFER, texcoordsID);
-  glBufferData(GL_ARRAY_BUFFER, tsz, tex_coords, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, tsz*sizeof(GLfloat), tex_coords, GL_STATIC_DRAW);
 
- // glGenTextures(1, &textureID);
   glBindTexture(GL_TEXTURE_2D, textureID);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexImage2D(GL_TEXTURE_2D, //target
@@ -158,8 +141,8 @@ void Shape::draw() {
   glUniform1i(uniform_mytexture, 0);
 
   GLfloat ambient[] = {0.5f, 0.5f, 0.5f, 1.0f};
-  GLfloat light1_dir[] = {20.0f, 20.0f, 20.0f};
-  GLfloat light1_color[] = {0.1f, 1.0f, 0.1f};
+  GLfloat light1_dir[] = {40.0f, 40.0f, 40.0f};
+  GLfloat light1_color[] = {0.1f, 0.1f, 0.1f};
 
   tempLoc = glGetUniformLocation(program,"Ambient");
   glUniform4fv(tempLoc,1,ambient);
