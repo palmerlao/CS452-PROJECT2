@@ -8,30 +8,37 @@ vector<GLfloat> triprism_normals {
 };
 
 vector<GLfloat> triprism_texcoords {
-  -1, -ncomp,
-   1, -ncomp,
-  -1, -ncomp,
-   1, -ncomp,
+  0,1,
+  0,0,
+  1,0,
 
-    1, -ncomp,
-    0, 2*ncomp,
-    0, 2*ncomp,
-    1, -ncomp,
+  0,1,
+  0,0,
+  1,0,
 
-    0, 2*ncomp,
-    -1, -ncomp,
-    -1, -ncomp,
-    0, 2*ncomp,
+  0,1,
+  0,0,
+  1,0,
 
-    -1, -ncomp,
-    1, -ncomp,
-    0, 2*ncomp,
-    -1, -ncomp,
+  0,1,
+  1,1,
+  1,0,
+    
+  0,1,
+  1,1,
+  1,0,
 
-    -1, -ncomp,
-    1, -ncomp,
-    0, 2*ncomp,
-    -1, -ncomp,
+  0,1,
+  0,0,
+  1,0,
+
+  0,1,
+  0,0,
+  1,0,
+
+  0,1,
+  0,0,
+  1,0,
 };
 
 vector<GLfloat> triprism_vertices {
@@ -63,5 +70,5 @@ vector<GLubyte> triprism_elems {
   5,2,1,
 
   0,3,2,
-  2,5,0
+  2,5,3
 };

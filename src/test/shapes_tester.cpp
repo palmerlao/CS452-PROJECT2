@@ -5,22 +5,18 @@ using namespace std;
 GLuint program;
 GLint uniform_mytexture;
 GLint attribute_texcoord;
-GLfloat pit,yaw,scalar=1;
-glm::vec3 cubeTran;
-GLfloat size=10;
+
+GLfloat size = 10;
 GLfloat ncomp = 1.0f / sqrt(3.0f); // for normal vectors
 
 #include "shape.h"
 #include "cube.h"
 #include "triprism.h"
+#include "plane.h"
 
 void rotate(GLuint locate);
 
-
-
-
-
-Shape *cube;
+vector<Shape*> shapes;
 
 void init(){
   
@@ -40,15 +36,19 @@ void init(){
   };
 		
   program=initShaders(shaders);
-  
-  cube = new Shape(triprism_vertices, triprism_elems, triprism_colors, triprism_normals, "texture.png", triprism_texcoords);
+  shapes.push_back(new Shape(plane_vertices, plane_elems, plane_colors, plane_normals, "t1.png", plane_texcoords));
+  shapes[0]->set_scale(size*10);
+  shapes[0]->set_trans_y(-50);
+  //  shapes.push_back(new Shape(triprism_vertices, triprism_elems, triprism_colors, triprism_normals, "t3.jpg", triprism_texcoords));
 }
 
 
 void display(SDL_Window* screen){
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-  cube->set_buffers();
-  cube->draw();  
+  for (unsigned i=0; i < shapes.size(); i++) {
+    shapes[i]->bind_buffers();
+    shapes[i]->draw();
+  }
   glFlush();
   SDL_GL_SwapWindow(screen);
 }
@@ -63,16 +63,16 @@ void input(SDL_Window* screen){
     case SDL_KEYDOWN:
       switch(event.key.keysym.sym){
       case SDLK_ESCAPE:exit(0);
-      case SDLK_w:cubeTran.y+=2;break;
-      case SDLK_s:cubeTran.y-=2;break;
-      case SDLK_a:cubeTran.x-=2;break;
-      case SDLK_d:cubeTran.x+=2;break;
-      case SDLK_e:scalar+=.1f;break;
-      case SDLK_q:scalar-=.1f;break;
-      case SDLK_i:pit+=2;break;
-      case SDLK_k:pit-=2;break;
-      case SDLK_j:yaw+=2;break;
-      case SDLK_l:yaw-=2;break;
+      case SDLK_w: shapes[0]->add_trans_y(2); break;
+      case SDLK_s: shapes[0]->add_trans_y(-2); break;
+      case SDLK_a: shapes[0]->add_trans_x(-2); break;
+      case SDLK_d: shapes[0]->add_trans_x(2); break;
+      case SDLK_e: shapes[0]->add_scale(-.1f); break;
+      case SDLK_q: shapes[0]->add_scale(.1f); break;
+      case SDLK_i: shapes[0]->add_pit(2); break;
+      case SDLK_k: shapes[0]->add_pit(-2); break;
+      case SDLK_j: shapes[0]->add_yaw(2); break;
+      case SDLK_l: shapes[0]->add_yaw(-2); break;
       }
     }
   }

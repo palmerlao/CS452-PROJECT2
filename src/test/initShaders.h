@@ -46,10 +46,9 @@ GLuint initShaders(ShaderInfo* shaders){
  	glUseProgram(program);
   
   glm::mat4 view;
-  view = glm::lookAt(//position and direction of camera
- 	  		glm::vec3(0.0f, 0.0f, 50.0f),
-        glm::vec3(0.0f, 0.0f, 0.0f),
-        glm::vec3(0.0f, 1.0f, 0.0f)
+  view = glm::lookAt(glm::vec3(0.0f, -100.0f, 50.0f), // location
+                     glm::vec3(0.0f, 0.0f, 0.0f),  // target
+                     glm::vec3(0.0f, 1.0f, 0.0f)   // up direction
     );
   GLint tempLoc = glGetUniformLocation(program, "viewMatrix");//Matrix that handles the camera movement
   glUniformMatrix4fv(tempLoc, 1, GL_FALSE, &view[0][0]);

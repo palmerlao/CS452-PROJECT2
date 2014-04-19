@@ -14,6 +14,8 @@ class Shape{
   GLuint vaoID, vboID[3], eboID, textureID, texcoordsID;
   GLfloat *vertices, *colors, *normals, *tex_coords;
   GLubyte *elements;
+  GLfloat pit=0, yaw=0, scale=size;
+  glm::vec3 translate_vec;
   int vsz, esz, csz, nsz, tsz;
   unsigned char *img;
   int img_width, img_height;
@@ -26,8 +28,22 @@ class Shape{
         string texture_img,
         vector<GLfloat> tcs);
   ~Shape();
-  void set_buffers();
+  void bind_buffers();
   void draw();
+
+  void set_pit(GLfloat p) { pit = p; }
+  void set_yaw(GLfloat y) { yaw = y; }
+  void set_scale(GLfloat s) { scale = s; }
+  void set_trans_x(GLfloat x) { translate_vec.x = x; }
+  void set_trans_y(GLfloat y) { translate_vec.y = y; }
+  void set_trans_z(GLfloat z) { translate_vec.z = z; }
+
+  void add_pit(GLfloat p) { pit += p; }
+  void add_yaw(GLfloat y) { yaw += y; }
+  void add_scale(GLfloat s) { scale += s; }
+  void add_trans_x(GLfloat x) { translate_vec.x += x; }
+  void add_trans_y(GLfloat y) { translate_vec.y += y; }
+  void add_trans_z(GLfloat z) { translate_vec.z += z; }
 
  private:
   template <typename T>
@@ -38,6 +54,7 @@ class Shape{
     return ret;
   }
 };
+
 
 Shape::Shape(vector<GLfloat> vs,
              vector<GLubyte> es,
@@ -81,7 +98,7 @@ Shape::~Shape() {
   delete[] img;
 }
 
-void Shape::set_buffers() {
+void Shape::bind_buffers() {
   glBindVertexArray(vaoID);
 
   glBindBuffer(GL_ARRAY_BUFFER, vboID[0]);
@@ -127,10 +144,10 @@ void Shape::set_buffers() {
 
 void Shape::draw() {
   glm::mat4 trans;
-  trans=glm::translate(trans,cubeTran);
+  trans=glm::translate(trans,translate_vec);
   trans=glm::rotate(trans,pit,glm::vec3(1.0f,0.0f,0.0f));
   trans=glm::rotate(trans,yaw,glm::vec3(0.0f,1.0f,0.0f));
-  trans=glm::scale(trans,glm::vec3(scalar));
+  trans=glm::scale(trans,glm::vec3(scale));
     
   GLint tempLoc = glGetUniformLocation(program,"modelMatrix");//Matrix that handle the transformations
   glUniformMatrix4fv(tempLoc,1,GL_FALSE,&trans[0][0]);
