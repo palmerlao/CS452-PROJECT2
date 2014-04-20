@@ -6,6 +6,11 @@ GLuint program;
 GLint uniform_mytexture;
 GLint attribute_texcoord;
 
+glm::mat4 view;
+glm::vec3 cam_loc = glm::vec3(0.0f, -100.0f, 50.0f),
+          cam_targ = glm::vec3(0.0f, 0.0f, 0.0f),
+          cam_up_dir = glm::vec3(0.0f, 1.0f, 0.0f);
+
 GLfloat size = 10;
 GLfloat ncomp = 1.0f / sqrt(3.0f); // for normal vectors
 
@@ -14,9 +19,23 @@ GLfloat ncomp = 1.0f / sqrt(3.0f); // for normal vectors
 #include "triprism.h"
 #include "plane.h"
 
+#define BOARD_SIZE 16
+
 void rotate(GLuint locate);
 
-vector<Shape*> shapes;
+Shape *game_board[BOARD_SIZE][BOARD_SIZE];
+Shape *plane;
+
+void draw_board() {
+  plane->bind_buffers();
+  plane->draw();
+  for (unsigned i=0; i<BOARD_SIZE; i++)
+    for (unsigned j=0; j<BOARD_SIZE; j++)
+      if (game_board[i][j] != NULL) {
+        game_board[i][j]->bind_buffers();
+        game_board[i][j]->draw();
+      }
+}
 
 void init(){
   
@@ -36,19 +55,22 @@ void init(){
   };
 		
   program=initShaders(shaders);
-  shapes.push_back(new Shape(plane_vertices, plane_elems, plane_colors, plane_normals, "t1.png", plane_texcoords));
-  shapes[0]->set_scale(size*10);
-  shapes[0]->set_trans_y(-50);
-  //  shapes.push_back(new Shape(triprism_vertices, triprism_elems, triprism_colors, triprism_normals, "t3.jpg", triprism_texcoords));
+  plane = new Shape(plane_vertices, plane_elems, plane_colors, plane_normals, "t1.png", plane_texcoords);
+  plane->set_scale(size*10);
+  plane->set_trans_y(-50);
+  for (unsigned i=0; i<BOARD_SIZE; i++)
+    for (unsigned j=0; j<BOARD_SIZE; j++)
+      game_board[i][j] = NULL;
+  game_board[0][0] = new Shape(triprism_vertices, triprism_elems, triprism_colors, triprism_normals, "t3.jpg", triprism_texcoords);
 }
 
 
 void display(SDL_Window* screen){
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-  for (unsigned i=0; i < shapes.size(); i++) {
-    shapes[i]->bind_buffers();
-    shapes[i]->draw();
-  }
+  
+  view = glm::lookAt(cam_loc, cam_targ, cam_up_dir);
+  draw_board();
+
   glFlush();
   SDL_GL_SwapWindow(screen);
 }
@@ -63,16 +85,34 @@ void input(SDL_Window* screen){
     case SDL_KEYDOWN:
       switch(event.key.keysym.sym){
       case SDLK_ESCAPE:exit(0);
-      case SDLK_w: shapes[0]->add_trans_y(2); break;
+        /*      case SDLK_w: shapes[0]->add_trans_y(2); break;
       case SDLK_s: shapes[0]->add_trans_y(-2); break;
       case SDLK_a: shapes[0]->add_trans_x(-2); break;
-      case SDLK_d: shapes[0]->add_trans_x(2); break;
-      case SDLK_e: shapes[0]->add_scale(-.1f); break;
+      case SDLK_d: shapes[0]->add_trans_x(2); break; */
+
+      case SDLK_w:
+        cam_loc.y+=2;
+        cam_targ.y+=2;
+        break;
+      case SDLK_s:
+        cam_loc.y-=2;
+        cam_targ.y-=2;
+        break;
+      case SDLK_a:
+        cam_loc.x-=2;
+        cam_targ.x-=2;
+        break;
+      case SDLK_d:
+        cam_loc.x+=2;
+        cam_targ.x+=2;
+        break;
+
+        /*      case SDLK_e: shapes[0]->add_scale(-.1f); break;
       case SDLK_q: shapes[0]->add_scale(.1f); break;
       case SDLK_i: shapes[0]->add_pit(2); break;
       case SDLK_k: shapes[0]->add_pit(-2); break;
       case SDLK_j: shapes[0]->add_yaw(2); break;
-      case SDLK_l: shapes[0]->add_yaw(-2); break;
+      case SDLK_l: shapes[0]->add_yaw(-2); break; */
       }
     }
   }

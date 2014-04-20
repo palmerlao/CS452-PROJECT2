@@ -152,6 +152,9 @@ void Shape::draw() {
   GLint tempLoc = glGetUniformLocation(program,"modelMatrix");//Matrix that handle the transformations
   glUniformMatrix4fv(tempLoc,1,GL_FALSE,&trans[0][0]);
 
+  tempLoc = glGetUniformLocation(program, "viewMatrix");//Matrix that handles the camera movement
+  glUniformMatrix4fv(tempLoc, 1, GL_FALSE, &view[0][0]);
+
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, textureID);
   uniform_mytexture = glGetUniformLocation(program, "texture");

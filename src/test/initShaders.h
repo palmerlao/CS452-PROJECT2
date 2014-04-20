@@ -45,14 +45,14 @@ GLuint initShaders(ShaderInfo* shaders){
   
  	glUseProgram(program);
   
-  glm::mat4 view;
+        /*  glm::mat4 view;
   view = glm::lookAt(glm::vec3(0.0f, -100.0f, 50.0f), // location
                      glm::vec3(0.0f, 0.0f, 0.0f),  // target
                      glm::vec3(0.0f, 1.0f, 0.0f)   // up direction
     );
   GLint tempLoc = glGetUniformLocation(program, "viewMatrix");//Matrix that handles the camera movement
-  glUniformMatrix4fv(tempLoc, 1, GL_FALSE, &view[0][0]);
-  
+  glUniformMatrix4fv(tempLoc, 1, GL_FALSE, &view[0][0]); */
+  GLint tempLoc;
   glm::mat4 mainProjMatrix;
   mainProjMatrix = glm::perspective(57.0,1.0,.1,500.0);//Matrix that handle the orthographic or perspective viewing
   tempLoc = glGetUniformLocation(program, "Matrix");
