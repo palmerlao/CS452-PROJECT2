@@ -31,10 +31,37 @@ Shape *plane;
 void draw_board() {
   plane->bind_buffers();
   plane->draw();
-  for (int i=0; i<width; i++)
-    for (int j=0; j<height; j++)
+
+  a->set_trans_x(2*size);
+  a->bind_buffers();
+  a->draw();
+
+  a->set_trans_x(-2*size);
+  a->bind_buffers();
+  a->draw();
+  
+  player->bind_buffers();
+  player->draw();
+  for (int i=0; i<width; i++) {
+    for (int j=0; j<height; j++) {
       if (player_levels[level_num][i][j] != FREE) {
+        switch(player_levels[level_num][i][j]) {
+        case A:
+          break;
+        case B:
+          break;
+        case C:
+          break;
+        case D:
+          break;
+        case STATIONARY:
+          break;
+        case PLAYER:
+          break;
+        }
       }
+    }
+  }
 }
 
 void init(){
@@ -150,7 +177,7 @@ int main(int argc, char **argv){
   }
   
   init();
-	
+  fprintf(stderr, "initialization successful\n");
   while(true){
     input(window);//keyboard controls
     display(window);//displaying
