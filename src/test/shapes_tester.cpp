@@ -7,33 +7,33 @@ GLint uniform_mytexture;
 GLint attribute_texcoord;
 
 glm::mat4 view;
-glm::vec3 cam_loc = glm::vec3(0.0f, -100.0f, 50.0f),
+glm::vec3 cam_loc = glm::vec3(0.0f, 0.0f, 150.0f),
           cam_targ = glm::vec3(0.0f, 0.0f, 0.0f),
           cam_up_dir = glm::vec3(0.0f, 1.0f, 0.0f);
 
 GLfloat size = 10;
 GLfloat ncomp = 1.0f / sqrt(3.0f); // for normal vectors
+int level_num = 0;
 
 #include "shape.h"
 #include "cube.h"
 #include "triprism.h"
 #include "plane.h"
 
-#define BOARD_SIZE 16
+#include "game.h"
 
 void rotate(GLuint locate);
 
-Shape *game_board[BOARD_SIZE][BOARD_SIZE];
 Shape *plane;
 
 void draw_board() {
   plane->bind_buffers();
   plane->draw();
-  for (unsigned i=0; i<BOARD_SIZE; i++)
-    for (unsigned j=0; j<BOARD_SIZE; j++)
-      if (game_board[i][j] != NULL) {
-        game_board[i][j]->bind_buffers();
-        game_board[i][j]->draw();
+  for (int i=0; i<width; i++)
+    for (int j=0; j<height; j++)
+      if (player_levels[level_num][i][j] != FREE) {
+        player_levels[level_num][i][j]->bind_buffers();
+        player_levels[level_num][i][j]->draw();
       }
 }
 
@@ -55,13 +55,12 @@ void init(){
   };
 		
   program=initShaders(shaders);
-  plane = new Shape(plane_vertices, plane_elems, plane_colors, plane_normals, "t1.png", plane_texcoords);
-  plane->set_scale(size*10);
-  plane->set_trans_y(-50);
-  for (unsigned i=0; i<BOARD_SIZE; i++)
-    for (unsigned j=0; j<BOARD_SIZE; j++)
-      game_board[i][j] = NULL;
-  game_board[0][0] = new Shape(triprism_vertices, triprism_elems, triprism_colors, triprism_normals, "t3.jpg", triprism_texcoords);
+  plane = new Shape(plane_vertices, plane_elems, plane_colors, plane_normals, "t1.jpg", plane_texcoords);
+  plane->set_scale(width/2);
+  plane->set_trans_z(-2*size);
+
+  init_blocks();
+  init_grid();
 }
 
 
@@ -85,34 +84,29 @@ void input(SDL_Window* screen){
     case SDL_KEYDOWN:
       switch(event.key.keysym.sym){
       case SDLK_ESCAPE:exit(0);
-        /*      case SDLK_w: shapes[0]->add_trans_y(2); break;
-      case SDLK_s: shapes[0]->add_trans_y(-2); break;
-      case SDLK_a: shapes[0]->add_trans_x(-2); break;
-      case SDLK_d: shapes[0]->add_trans_x(2); break; */
-
       case SDLK_w:
-        cam_loc.y+=2;
-        cam_targ.y+=2;
+        cam_loc.y+=size;
+        cam_targ.y+=size;
         break;
       case SDLK_s:
-        cam_loc.y-=2;
-        cam_targ.y-=2;
+        cam_loc.y-=size;
+        cam_targ.y-=size;
         break;
       case SDLK_a:
-        cam_loc.x-=2;
-        cam_targ.x-=2;
+        cam_loc.x-=size;
+        cam_targ.x-=size;
         break;
       case SDLK_d:
-        cam_loc.x+=2;
-        cam_targ.x+=2;
+        cam_loc.x+=size;
+        cam_targ.x+=size;
         break;
 
-        /*      case SDLK_e: shapes[0]->add_scale(-.1f); break;
-      case SDLK_q: shapes[0]->add_scale(.1f); break;
-      case SDLK_i: shapes[0]->add_pit(2); break;
-      case SDLK_k: shapes[0]->add_pit(-2); break;
-      case SDLK_j: shapes[0]->add_yaw(2); break;
-      case SDLK_l: shapes[0]->add_yaw(-2); break; */
+      case SDLK_q: break;
+      case SDLK_e: break;
+      case SDLK_i: break;
+      case SDLK_k: break;
+      case SDLK_l: break;
+      case SDLK_j: break;
       }
     }
   }

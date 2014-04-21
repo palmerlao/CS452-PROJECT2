@@ -31,5 +31,6 @@ void main()
   vec4 tex = texture2D(texture, f_texcoord);
   vec3 rgb = min( (tex.rgb * amb) * scatteredLight + reflectedLight, vec3(1.0));
 
-  out_color = vec4(rgb, pass_color.a);
+//  out_color = vec4(rgb, pass_color.a);
+out_color=vec4(tex.rgb,pass_color.a);
 }

@@ -10,46 +10,21 @@ vector<GLfloat> cube_normals {
 };
 
 vector<GLfloat> cube_texcoords {
-  -size, -size,
-   size, -size,
-   size,  size,
-  -size,  size,
-
-  -size, -size,
-   size, -size,
-   size,  size,
-  -size,  size,
-
-  -size, -size,
-   size, -size,
-   size,  size,
-  -size,  size,
-
-  -size, -size,
-   size, -size,
-   size,  size,
-  -size,  size,
-
-  -size, -size,
-   size, -size,
-   size,  size,
-  -size,  size,
-
-  -size, -size,
-   size, -size,
-   size,  size,
-  -size,  size,
+  0,1,
+  1,1,
+  1,0,
+  0,0,
 };
 
 vector<GLfloat> cube_vertices {
-   -size, -size,  size,
-    size, -size,  size,
-    size,  size,  size, 
-   -size,  size,  size,
-    size,  size, -size,
-   -size,  size, -size,
-   -size, -size, -size,
-    size, -size, -size 
+   -1, -1,  1,
+    1, -1,  1,
+    1,  1,  1, 
+   -1,  1,  1,
+    1,  1, -1,
+   -1,  1, -1,
+   -1, -1, -1,
+    1, -1, -1 
 };
 
 vector<GLfloat> cube_colors {
@@ -69,7 +44,7 @@ vector<GLubyte> cube_elems {
 
   0, 3, 5,
   0, 5, 6,
-
+    
   1, 2, 4,
   1, 4, 7,
 		
@@ -77,8 +52,8 @@ vector<GLubyte> cube_elems {
   3, 4, 5,
 	
   0, 1, 6,
-  0, 1, 7,
-	
+  6, 7, 1,
+
   5, 6, 7,
   4, 5, 7
 };
