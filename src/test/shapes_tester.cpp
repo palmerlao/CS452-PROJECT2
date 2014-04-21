@@ -18,11 +18,15 @@ GLfloat ncomp = 1.0f / sqrt(3.0f); // for normal vectors
 #include "cube.h"
 #include "triprism.h"
 #include "plane.h"
+#include "octahedron.h"
+#include "hexprism.h"
 
 #define BOARD_SIZE 16
 
 void rotate(GLuint locate);
 
+Shape *hexprism;
+Shape *octahedron;
 Shape *game_board[BOARD_SIZE][BOARD_SIZE];
 Shape *plane;
 
@@ -53,15 +57,30 @@ void init(){
     { GL_FRAGMENT_SHADER , "fragmentshader.glsl"}, 
     { GL_NONE , NULL} 
   };
+
 		
   program=initShaders(shaders);
   plane = new Shape(plane_vertices, plane_elems, plane_colors, plane_normals, "t1.png", plane_texcoords);
-  plane->set_scale(size*10);
-  plane->set_trans_y(-50);
+  //plane->set_scale(size*10);
+  //plane->set_trans_y(size*10);
   for (unsigned i=0; i<BOARD_SIZE; i++)
     for (unsigned j=0; j<BOARD_SIZE; j++)
       game_board[i][j] = NULL;
-  game_board[0][0] = new Shape(triprism_vertices, triprism_elems, triprism_colors, triprism_normals, "t3.jpg", triprism_texcoords);
+//  game_board[0][0] = new Shape(triprism_vertices, triprism_elems, triprism_colors, triprism_normals, "t3.jpg", triprism_texcoords);
+//  game_board[0][1] = new Shape(octo_vertices, octo_elems, octo_colors, octo_norms, "t2.jpg", octo_tex);
+  game_board[0][0] = new Shape(hexprism_vertices, hexprism_elems, hexprism_colors, hexprism_norms, "t5.jpg", hexprism_tex);
+
+/*  
+  game_board[0][1]->set_scale(size);
+  game_board[0][1]->add_trans_x(size);
+  game_board[0][1]->add_trans_y(size);
+  game_board[0][1]->add_trans_z(size);
+
+  game_board[0][0]->set_scale(size);
+  game_board[0][0]->add_trans_x(size);
+  game_board[0][0]->add_trans_y(size);
+  game_board[0][0]->add_trans_z(size);
+*/
 }
 
 
@@ -107,12 +126,12 @@ void input(SDL_Window* screen){
         cam_targ.x+=2;
         break;
 
-        /*      case SDLK_e: shapes[0]->add_scale(-.1f); break;
-      case SDLK_q: shapes[0]->add_scale(.1f); break;
-      case SDLK_i: shapes[0]->add_pit(2); break;
-      case SDLK_k: shapes[0]->add_pit(-2); break;
-      case SDLK_j: shapes[0]->add_yaw(2); break;
-      case SDLK_l: shapes[0]->add_yaw(-2); break; */
+ //             case SDLK_e: shapes[0]->add_scale(-.1f); break;
+  //    case SDLK_q: shapes[0]->add_scale(.1f); break;
+      case SDLK_i: game_board[0][0]->add_pit(2); break;
+      case SDLK_k: game_board[0][0]->add_pit(-2); break;
+      case SDLK_j: game_board[0][0]->add_yaw(2); break;
+      case SDLK_l: game_board[0][0]->add_yaw(-2); break; 
       }
     }
   }

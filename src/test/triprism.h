@@ -14,47 +14,15 @@ vector<GLfloat> triprism_texcoords {
     1,1,
     0,1,
     0,0.5,
-    
-  /*  0,1,
-  0,0,
-  1,0,
-
-  0,1,
-  0,0,
-  1,0,
-
-  0,1,
-  0,0,
-  1,0,
-
-  0,1,
-  1,1,
-  1,0,
-    
-  0,1,
-  1,1,
-  1,0,
-
-  0,1,
-  0,0,
-  1,0,
-
-  0,1,
-  0,0,
-  1,0,
-
-  0,1,
-  0,0,
-  1,0, */
 };
 
 vector<GLfloat> triprism_vertices {
   -1, -ncomp, 1,
    1, -ncomp, 1,
-   0, 2*ncomp, 1,
+   0, ncomp, 1,
   -1, -ncomp, -1,
    1, -ncomp, -1,
-   0, 2*ncomp, -1
+   0, ncomp, -1
 };
 
 vector<GLfloat> triprism_colors {
