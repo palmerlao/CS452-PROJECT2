@@ -146,7 +146,7 @@ void Shape::draw() {
   glm::mat4 trans;
   trans=glm::translate(trans,translate_vec);
   trans=glm::rotate(trans,pit,glm::vec3(1.0f,0.0f,0.0f));
-  trans=glm::rotate(trans,yaw,glm::vec3(0.0f,1.0f,0.0f));
+  trans=glm::rotate(trans,yaw,glm::vec3(0.0f,0.0f,1.0f));
   trans=glm::scale(trans,glm::vec3(scale));
     
   GLint tempLoc = glGetUniformLocation(program,"modelMatrix");//Matrix that handle the transformations

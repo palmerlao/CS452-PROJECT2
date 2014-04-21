@@ -6,17 +6,17 @@ vector<GLfloat> plane_normals {
 };
 
 vector<GLfloat> plane_texcoords {
-  0,0,
-  1,0,
-  1,1,
- -1,1
+  0, 0,
+  1, 0,
+  1, 1,
+ -1, 1
 };
 
 vector<GLfloat> plane_vertices {
-  -1, -1, 0,
-   1, -1, 0,
-   1,  1, 0,
-  -1,  1, 0
+  -20, -20, -1,
+   20, -20, -1,
+   20, 20, -1,
+  -20, 20, -1
 };
 
 vector<GLfloat> plane_colors {

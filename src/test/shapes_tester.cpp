@@ -17,8 +17,10 @@ int level_num = 0;
 
 #include "shape.h"
 #include "cube.h"
-#include "triprism.h"
 #include "plane.h"
+#include "octahedron.h"
+#include "hexprism.h"
+#include "triprism.h"
 
 #include "game.h"
 
@@ -32,8 +34,6 @@ void draw_board() {
   for (int i=0; i<width; i++)
     for (int j=0; j<height; j++)
       if (player_levels[level_num][i][j] != FREE) {
-        player_levels[level_num][i][j]->bind_buffers();
-        player_levels[level_num][i][j]->draw();
       }
 }
 
@@ -53,11 +53,10 @@ void init(){
     { GL_FRAGMENT_SHADER , "fragmentshader.glsl"}, 
     { GL_NONE , NULL} 
   };
+
 		
   program=initShaders(shaders);
   plane = new Shape(plane_vertices, plane_elems, plane_colors, plane_normals, "t1.jpg", plane_texcoords);
-  plane->set_scale(width/2);
-  plane->set_trans_z(-2*size);
 
   init_blocks();
   init_grid();
