@@ -7,7 +7,7 @@ GLint uniform_mytexture;
 GLint attribute_texcoord;
 
 glm::mat4 view;
-glm::vec3 cam_loc = glm::vec3(0.0f, 0.0f, 150.0f),
+glm::vec3 cam_loc = glm::vec3(0.0f, -75.0f, 150.0f),
           cam_targ = glm::vec3(0.0f, 0.0f, 0.0f),
           cam_up_dir = glm::vec3(0.0f, 1.0f, 0.0f);
 
@@ -29,36 +29,37 @@ void rotate(GLuint locate);
 Shape *plane;
 
 void draw_board() {
+  int x,y;
   plane->bind_buffers();
   plane->draw();
-
-  a->set_trans_x(2*size);
-  a->bind_buffers();
-  a->draw();
-
-  a->set_trans_x(-2*size);
-  a->bind_buffers();
-  a->draw();
-  
-  player->bind_buffers();
-  player->draw();
   for (int i=0; i<width; i++) {
     for (int j=0; j<height; j++) {
       if (player_levels[level_num][i][j] != FREE) {
+        x = 2*(i-(width/2))*size;
+        y = 2*(j-(height/2))*size;
+        Shape *tmp;
         switch(player_levels[level_num][i][j]) {
         case A:
+          tmp = a;
           break;
         case B:
+          tmp = b;
           break;
-        case C:
-          break;
+        case C: tmp = c; break;
         case D:
+          tmp = d;
           break;
         case STATIONARY:
+          tmp = stationary;
           break;
         case PLAYER:
+          tmp = player;
           break;
         }
+        tmp->set_trans_x(x);
+        tmp->set_trans_y(y);
+        tmp->bind_buffers();
+        tmp->draw();
       }
     }
   }
@@ -94,6 +95,23 @@ void display(SDL_Window* screen){
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
   
   view = glm::lookAt(cam_loc, cam_targ, cam_up_dir);
+  
+  int cnt = 0;
+  for (int i=0; i < width; i++)
+    for (int j=0; j < height; j++)
+      if (player_levels[level_num][i][j] != STATIONARY &&
+          player_levels[level_num][i][j] != FREE &&
+          player_levels[level_num][i][j] != PLAYER)
+        cnt++;
+  if (cnt == 0) {
+    level_num++;
+  }
+
+  if (level_num == levels) {
+    cout << "It took you " << moves_made << " moves to complete the game." << endl;
+    exit(0);
+  }
+
   draw_board();
 
   glFlush();
@@ -110,29 +128,29 @@ void input(SDL_Window* screen){
     case SDL_KEYDOWN:
       switch(event.key.keysym.sym){
       case SDLK_ESCAPE:exit(0);
-      case SDLK_w:
+      case SDLK_i:
         cam_loc.y+=size;
         cam_targ.y+=size;
         break;
-      case SDLK_s:
+      case SDLK_k:
         cam_loc.y-=size;
         cam_targ.y-=size;
         break;
-      case SDLK_a:
+      case SDLK_j:
         cam_loc.x-=size;
         cam_targ.x-=size;
         break;
-      case SDLK_d:
+      case SDLK_l:
         cam_loc.x+=size;
         cam_targ.x+=size;
         break;
 
       case SDLK_q: break;
       case SDLK_e: break;
-      case SDLK_i: break;
-      case SDLK_k: break;
-      case SDLK_l: break;
-      case SDLK_j: break;
+      case SDLK_w: move_player(UP); break;
+      case SDLK_a: move_player(LEFT); break;
+      case SDLK_s: move_player(DOWN); break;
+      case SDLK_d: move_player(RIGHT); break;
       }
     }
   }
@@ -177,7 +195,6 @@ int main(int argc, char **argv){
   }
   
   init();
-  fprintf(stderr, "initialization successful\n");
   while(true){
     input(window);//keyboard controls
     display(window);//displaying

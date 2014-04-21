@@ -2,13 +2,15 @@ enum block_t {FREE, STATIONARY, A, B, C, D, PLAYER};
 enum move_t {UP, DOWN, LEFT, RIGHT};
 const int levels = 3, width = 16, height = 16;
 
+int moves_made = 0;
+
 block_t level[levels][width][height];
 block_t player_levels[levels][width][height];
 
 Shape *a, *b, *c, *d, *player, *stationary;
 
 void init_grid(){
-  int i, j, k;
+  int i, j, k, row1, row2, column1, column2;
   for(i = 0; i < levels; i++) {
     for(j = 0; j < width; j++)
       for(k = 0; k < height; k++)
@@ -22,18 +24,31 @@ void init_grid(){
       level[i][j][0] = STATIONARY;
     }
   }
-  for (i=0; i<levels; i++) {
-    level[i][1][6] = A;
-    level[i][1][7] = A;
-    level[i][2][6] = B;
-    level[i][3][6] = C;
-    level[i][2][5] = D;
-    level[i][2][4] = A;
+
+  //Initialize all levels
+  for(i = 0; i < levels; i++){	
+    level[i][6][6] = A;
+    level[i][14][7] = A;
+    level[i][9][6] = B;
+    level[i][8][6] = C;
+    level[i][9][3] = D;
+    level[i][5][4] = A;
     level[i][7][5] = A;
-    level[i][3][3] = B;
+    level[i][6][7] = B;
     level[i][3][4] = C;
     level[i][2][7] = D;
     level[i][4][4] = PLAYER;
+  }
+
+  //Randomize all levels
+  for(i = 0; i < levels; i++){	
+    for(j = 0; j < 1000; j++){
+      row1 = rand() % 12 +1;
+      column1 = rand() % 12 +1;
+      row2 = rand() % 12 +1;
+      column2 = rand() % 12 +1;
+      swap(level[i][row1][column1],level[i][row2][column2]);
+    }
   }
   memcpy(&player_levels, &level, levels*width*height*sizeof(block_t));
 }
@@ -41,11 +56,10 @@ void init_grid(){
 void init_blocks() {
   a = new Shape(triprism_vertices, triprism_elems, triprism_colors, triprism_normals, "t2.jpg", triprism_texcoords);
   b = new Shape(cube_vertices, cube_elems, cube_colors, cube_normals, "t3.jpg", cube_texcoords);
-  c = new Shape(triprism_vertices, triprism_elems, triprism_colors, triprism_normals, "t4.jpg", triprism_texcoords);
-  d = new Shape(cube_vertices, cube_elems, cube_colors, cube_normals, "t5.jpg", cube_texcoords);
+  c = new Shape(hexprism_vertices, hexprism_elems, hexprism_colors, hexprism_normals, "t4.jpg", hexprism_texcoords);
+  d = new Shape(octo_vertices, octo_elems, octo_colors, octo_normals, "t5.jpg", octo_texcoords);
   player = new Shape(cube_vertices, cube_elems, cube_colors, cube_normals, "player.jpg", cube_texcoords);
-  fprintf(stderr, "blocks initialized\n");
-  fprintf(stderr, "a's address: %p\n",a);
+  stationary = new Shape(cube_vertices, cube_elems, cube_colors, cube_normals, "t6.jpg", cube_texcoords);
 }
 
 bool is_in_bounds(int x, int y) {
@@ -124,6 +138,7 @@ void move_player(move_t mvmt) {
       }
     }
   }
+  moves_made++;
   switch (mvmt) {
   case UP:
     new_coordx = i;

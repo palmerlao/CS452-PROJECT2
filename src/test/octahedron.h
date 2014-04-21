@@ -7,7 +7,7 @@ vector<GLfloat> octo_vertices {
 	0.000, 0.000, -1.000
 };
 
-vector<GLfloat> octo_norms {
+vector<GLfloat> octo_normals {
 	0.000, 0.000, 1.000,
 	1.000, 0.000, 0.000,
 	0.000, 1.000, 0.000,
@@ -29,7 +29,7 @@ vector<GLfloat> octo_colors {
 };
 
 
-vector<GLfloat> octo_tex {
+vector<GLfloat> octo_texcoords {
   0,0,
   0.5,0,
   1,0,

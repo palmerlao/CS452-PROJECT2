@@ -18,7 +18,7 @@ vector<GLfloat> hexprism_vertices {
 	-0.5f, -0.87f, -1.0f,
 };
 
-vector<GLfloat> hexprism_tex {
+vector<GLfloat> hexprism_texcoords {
 	0,4,
 	0,4,
 	4,0,
@@ -30,7 +30,7 @@ vector<GLfloat> hexprism_tex {
 
 
 
-vector<GLfloat> hexprism_norms {
+vector<GLfloat> hexprism_normals {
 	0.0f, 1.0f, 0.0f,
 	1/sqrt(2),1/sqrt(2),0,
 	-1/sqrt(2),1/sqrt(2),0,

@@ -13,10 +13,10 @@ vector<GLfloat> plane_texcoords {
 };
 
 vector<GLfloat> plane_vertices {
-  -20, -20, -1,
-   20, -20, -1,
-   20, 20, -1,
-  -20, 20, -1
+  -16, -16, -1,
+   15, -16, -1,
+   15, 15, -1,
+  -15, 15, -1
 };
 
 vector<GLfloat> plane_colors {

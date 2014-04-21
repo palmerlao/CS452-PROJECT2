@@ -136,8 +136,8 @@ void Shape::bind_buffers() {
  glEnableVertexAttribArray(2);
 
  attribute_texcoord = glGetAttribLocation(program, "texcoord");
- if (attribute_texcoord == -1)
-    fprintf(stderr, "Could not bind texcoord attribute\n");
+ if (attribute_texcoord == -1) ;;
+   //    fprintf(stderr, "Could not bind texcoord attribute\n");
  glEnableVertexAttribArray(attribute_texcoord);
  glVertexAttribPointer(attribute_texcoord, 2, GL_FLOAT, GL_FALSE, 0, 0);
 }
@@ -159,19 +159,6 @@ void Shape::draw() {
   glBindTexture(GL_TEXTURE_2D, textureID);
   uniform_mytexture = glGetUniformLocation(program, "texture");
   glUniform1i(uniform_mytexture, 0);
-
-  GLfloat ambient[] = {0.5f, 0.5f, 0.5f, 1.0f};
-  GLfloat light1_dir[] = {40.0f, 40.0f, 40.0f};
-  GLfloat light1_color[] = {0.1f, 0.1f, 0.1f};
-
-  tempLoc = glGetUniformLocation(program,"Ambient");
-  glUniform4fv(tempLoc,1,ambient);
-  tempLoc = glGetUniformLocation(program,"LightColor1");
-  glUniform3fv(tempLoc,1,light1_color);
-  tempLoc = glGetUniformLocation(program,"LightDirection1");
-  glUniform3fv(tempLoc,1,light1_dir);
-  tempLoc = glGetUniformLocation(program,"HalfVector1");
-  glUniform3fv(tempLoc,1,light1_dir);
 
   glDrawElements(GL_TRIANGLES, esz, GL_UNSIGNED_BYTE, NULL);
 }

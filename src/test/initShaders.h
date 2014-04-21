@@ -57,6 +57,20 @@ GLuint initShaders(ShaderInfo* shaders){
   mainProjMatrix = glm::perspective(57.0,1.0,.1,500.0);//Matrix that handle the orthographic or perspective viewing
   tempLoc = glGetUniformLocation(program, "Matrix");
   glUniformMatrix4fv(tempLoc, 1, GL_FALSE, &mainProjMatrix[0][0]);
+
+  GLfloat ambient[] = {0.7f, 0.7f, 0.7f, 1.0f};
+  GLfloat light1_dir[] = {40.0f, 40.0f, 40.0f};
+  GLfloat light1_color[] = {0.1f, 0.1f, 0.1f};
+
+  tempLoc = glGetUniformLocation(program,"Ambient");
+  glUniform4fv(tempLoc,1,ambient);
+  tempLoc = glGetUniformLocation(program,"LightColor1");
+  glUniform3fv(tempLoc,1,light1_color);
+  tempLoc = glGetUniformLocation(program,"LightDirection1");
+  glUniform3fv(tempLoc,1,light1_dir);
+  tempLoc = glGetUniformLocation(program,"HalfVector1");
+  glUniform3fv(tempLoc,1,light1_dir);
+
   
   return program;
    
